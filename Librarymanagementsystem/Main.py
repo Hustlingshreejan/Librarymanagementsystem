@@ -12,7 +12,7 @@ class Library:
     def listofbook(self):
         listt=self.booklist
         print("List of the books".upper())
-        for index, books in enumerate (listt):
+        for index, books in enumerate (listt, start=1):
             print(f"{index}: {books}")
 
     def addbook(self):
@@ -21,7 +21,8 @@ class Library:
         while(True):
             userinput=input("Name: ")
             self.booklist.append(userinput)
-            print(f"Thank you for you contribution to the library. Your book: '{userinput}' has been successfully added to "
+            self.bookdata[userinput]=None
+            print(f"Thank you for your contribution to the library. Your book: '{userinput}' has been successfully added to "
                   f"our library."
                   )
             print("Do you want to add another book?")
@@ -33,49 +34,51 @@ class Library:
                 break
 
     def lendbook(self):
-
-        print("Which book ???")
+        print("Which book you are looking for ???")
         userlend=input("Book name:").capitalize()
+        print(self.booklist)
+        print(self.bookdata)
         if userlend in self.booklist:
             print("Checking the availability of the book...\n")
-
             if self.bookdata[userlend] is None:
                 print(f"The book '{userlend}', you requested is currently available.\n")
                 print("Do you want to lend it: ")
                 lendingpermission = int(input("1.yes 2.No"))
                 if lendingpermission == 1:
-                    username = input("Your name:")
+                    username = input("To lend a book you have to provide your name.\nYour name:")
                     self.bookdata[userlend]=username
-                    print("Your name and the name of the book has been registered successfully\n")
+                    print("Your name has been registered successfully\n")
                     print("List of the book with the name of student who took the book".upper())
                     for key, val in self.bookdata.items() :
                         if val!=None:
                             print(f"Book: {key} -- Student's name: {val}")
             else:
                 print(f"This book has already been taken by {self.bookdata.get(userlend)}.\nIt will be available in thisthis date...\nReserver for me (option)")
-
-
         else:
             print(f"Sorry there is no book named as '{userlend}' in our library. Please type the spelling of the book correctly.")
 
 
     def returnbook(self):
-        dicttt = {"Nepali": "Suresh"}
         print("Enter your username")
         username=input("Username:")
-        if username==dicttt.values():
-            print("You took this this book on this this date")
-        else:
-            print("hahahah")
+        for key,value in self.bookdata.items():
+            if value!=None:
+                # print(key,value)
+                if value == username:
+                    print(key, value)
+                    print(f"You borrowed {key} book on this this date")
+                    self.bookdata[key]=None
+                    # self.bookdata.pop(key)
+                    print("The book has been released.")
+                else:
+                    print(f"The username is incorrect.\nUser name {username} has not been registered yet.")
 
 def main():
     listofbooks=["Math", "Science","Nepali"]
     libraryname="Shreejan's library"
     shreelibrary=Library(libraryname, listofbooks)
-
-    print('Do you want to\n 1:see the detail of the books\n 2:Lend of book \n 3:donate a book \n 4:return a book\n Q for Exit from the system ')
-
-
+    print(f"Welcome to {shreelibrary.libarayname} ".upper())
+    print('Do you want to\n 1:List all the books of the library\n 2:Lend of book \n 3:donate a book \n 4:return a book\n Q for Exit from the system ')
     Exit = False
     while (Exit is not True):
         firstuser = input("\noption:").capitalize()
@@ -92,9 +95,6 @@ def main():
             Exit = True
         else:
             print(f"Welcome to {shreelibrary.libarayname} ")
-
-
-
 
 if __name__ == '__main__':
     main()
