@@ -70,15 +70,27 @@ class Library:
                     self.bookdata[key]=None
                     # self.bookdata.pop(key)
                     print("The book has been released.")
+                    break
                 else:
                     print(f"The username is incorrect.\nUser name {username} has not been registered yet.")
+
+    def bookdel(self):
+
+        print("Now you have access to delete the book from the library.")
+        admindel=input("Which book you want to delete? ").capitalize()
+        print(self.booklist)
+        self.booklist.remove(admindel)
+        print(self.booklist)
+
+
 
 def main():
     listofbooks=["Math", "Science","Nepali"]
     libraryname="Shreejan's library"
     shreelibrary=Library(libraryname, listofbooks)
+    adminpass=192
     print(f"Welcome to {shreelibrary.libarayname} ".upper())
-    print('Do you want to\n 1:List all the books of the library\n 2:Lend of book \n 3:donate a book \n 4:return a book\n Q for Exit from the system ')
+    print('Do you want to\n 1:List all the books of the library\n 2:Lend of book \n 3:donate a book \n 4:return a book\n 5:Admin pannel\nQ for Exit from the system ')
     Exit = False
     while (Exit is not True):
         firstuser = input("\noption:").capitalize()
@@ -91,6 +103,13 @@ def main():
             shreelibrary.addbook()
         elif firstuser == '4':
             shreelibrary.returnbook()
+        elif firstuser=='5':
+            print("This is for admin only\n")
+            foradmin=int(input("Enter the password:"))
+            if foradmin == adminpass:
+                shreelibrary.bookdel()
+            else:
+                print("Access denied")
         elif firstuser == 'Q':
             Exit = True
         else:
