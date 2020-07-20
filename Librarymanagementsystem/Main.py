@@ -1,4 +1,4 @@
-
+from datetime import datetime
 class Library:
 
     def __init__(self,libraryname,booklist):
@@ -16,7 +16,6 @@ class Library:
             print(f"{index}: {books}")
 
     def addbook(self):
-
         print("Enter the book name below. You can add only one book at a time.")
         while(True):
             userinput=input("Name: ")
@@ -36,8 +35,6 @@ class Library:
     def lendbook(self):
         print("Which book you are looking for ???")
         userlend=input("Book name:").capitalize()
-        print(self.booklist)
-        print(self.bookdata)
         if userlend in self.booklist:
             print("Checking the availability of the book...\n")
             if self.bookdata[userlend] is None:
@@ -47,11 +44,14 @@ class Library:
                 if lendingpermission == 1:
                     username = input("To lend a book you have to provide your name.\nYour name:")
                     self.bookdata[userlend]=username
+                    with open("lendrecord.txt","a") as lr:
+                        presentdate=datetime.now()
+                        lr.write(f"Date:{[str(presentdate)]}, Book_name:{userlend}, Username:{username}\n")
                     print("Your name has been registered successfully\n")
                     print("List of the book with the name of student who took the book".upper())
-                    for key, val in self.bookdata.items() :
-                        if val!=None:
-                            print(f"Book: {key} -- Student's name: {val}")
+                    # for key, val in self.bookdata.items() :
+                    #     if val!=None:
+                    #         print(f"Book: {key} -- Student's name: {val}")
             else:
                 print(f"This book has already been taken by {self.bookdata.get(userlend)}.\nIt will be available in thisthis date...\nReserver for me (option)")
         else:
@@ -63,11 +63,14 @@ class Library:
         username=input("Username:")
         for key,value in self.bookdata.items():
             if value!=None:
-                # print(key,value)
                 if value == username:
                     print(key, value)
                     print(f"You borrowed {key} book on this this date")
                     self.bookdata[key]=None
+                    with open("bookreturnrecord.txt","a") as brr:
+                        returndate=datetime.now()
+                        brr.write(f"Date:{[str(returndate)]}, Book_name:{key}, Username:{username}\n")
+
                     # self.bookdata.pop(key)
                     print("The book has been released.")
                     break
