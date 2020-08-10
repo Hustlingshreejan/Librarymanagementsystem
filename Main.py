@@ -8,6 +8,10 @@ class Library:
 
         for book in booklist:
             self.bookdata[book] = None
+    def save_book(self):
+        with open("savingbook.txt","a") as sb:
+            for book in self.booklist:
+                sb.write(book+'\n')
 
     def listofbook(self):
         listt=self.booklist
@@ -20,10 +24,13 @@ class Library:
         while(True):
             userinput=input("Name: ")
             self.booklist.append(userinput)
+            with open("savingbook.txt", "a") as sbb:
+                sbb.write(userinput)
             self.bookdata[userinput]=None
             print(f"Thank you for your contribution to the library. Your book: '{userinput}' has been successfully added to "
                   f"our library."
                   )
+
             print("Do you want to add another book?")
             userinfo=int(input("1: yes, 2:No"))
             if userinfo==1:
@@ -35,6 +42,7 @@ class Library:
     def lendbook(self):
         print("Which book you are looking for ???")
         userlend=input("Book name:").capitalize()
+
         if userlend in self.booklist:
             print("Checking the availability of the book...\n")
             if self.bookdata[userlend] is None:
@@ -48,7 +56,7 @@ class Library:
                         presentdate=datetime.now()
                         lr.write(f"Date:{[str(presentdate)]}, Book_name:{userlend}, Username:{username}\n")
                     print("Your name has been registered successfully\n")
-                    print("List of the book with the name of student who took the book".upper())
+                    # print("List of the book with the name of student who took the book".upper())
                     # for key, val in self.bookdata.items() :
                     #     if val!=None:
                     #         print(f"Book: {key} -- Student's name: {val}")
@@ -83,14 +91,19 @@ class Library:
         admindel=input("Which book you want to delete? ").capitalize()
         print(self.booklist)
         self.booklist.remove(admindel)
+        with open("savingbook.txt", "r+") as sbb:
+            sbb.truncate(admindel)
+
         print(self.booklist)
 
 
 
 def main():
-    listofbooks=["Math", "Science","Nepali"]
-    libraryname="Shreejan's library"
-    shreelibrary=Library(libraryname, listofbooks)
+    set_libraryname=input("Give the name to your library:")
+    listofbooks=list(input("Add book in your library:").title().split(','))
+    # print(listofbooks)
+    shreelibrary=Library(set_libraryname, listofbooks)
+    shreelibrary.save_book()
     adminpass=192
     print(f"Welcome to {shreelibrary.libarayname} ".upper())
     print('Do you want to\n 1:List all the books of the library\n 2:Lend of book \n 3:donate a book \n 4:return a book\n 5:Admin pannel\nQ for Exit from the system ')
@@ -120,17 +133,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
